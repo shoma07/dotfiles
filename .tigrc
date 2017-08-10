@@ -1,0 +1,187 @@
+# vimの起動
+bind generic V !vim "%(prompt vim Enter path:)"
+
+# 設定
+set main-view = id date author:email-user commit-title:graph=yes,refs=yes
+set line-graphics = default
+set blame-view  = date:default author:email-user id:yes,color line-number:yes,interval=1 text
+set pager-view  = line-number:yes,interval=1 text
+set stage-view  = line-number:yes,interval=1 text
+set log-view    = line-number:yes,interval=1 text
+set blob-view   = line-number:yes,interval=1 text
+set diff-view   = line-number:yes,interval=1 text:yes,commit-title-overflow=no
+set refresh-mode = auto
+set split-view-height = 60%
+
+# キーバインド
+# 移動
+bind generic n none
+bind generic N none
+bind generic nn find-next
+bind generic np find-prev
+
+# viewの切替を大文字に
+bind generic m none
+bind status M none
+bind generic M view-main
+bind generic main view-main
+bind generic d none
+bind generic D view-diff
+bind generic diff view-diff
+bind generic l none
+bind generic L view-log
+bind generic log view-log
+bind generic t none
+bind generic T view-tree
+bind generic tree view-tree
+bind generic f none
+bind generic F view-blob
+bind generic file view-blob
+bind generic b none
+bind generic B view-blame
+bind generic blame view-blame
+bind generic r none
+bind generic R view-refs
+bind generic refs view-refs
+bind generic branch view-refs
+bind generic s none
+bind generic S view-status
+bind generic status view-status
+bind generic c none
+bind status C none
+bind generic C view-stage
+bind generic y none
+bind generic Y view-stash
+bind generic g none
+bind generic G view-grep
+bind stash P none
+bind generic p none
+bind generic P view-pager
+bind generic pager view-pager
+bind generic h none
+bind generic H view-help
+bind generic help view-help
+
+# トグルをファンクションにする
+bind generic I none
+bind generic <F1> :toggle sort-order
+bind generic i none
+bind generic <F2> :toggle sort-field
+bind generic <Hash> none
+bind generic <F3> :toggle line-number
+bind generic D none
+bind generic <F4> :toggle date
+bind generic A none
+bind generic <F6> :toggle author
+bind generic ~ none
+bind generic <F7> :toggle line-graphics
+bind generic W none
+bind generic <F8> :toggle ignore-space
+bind generic X none
+bind generic <F9> :toggle id
+bind generic % none
+bind generic <F10> :toggle file-filter
+bind generic G none
+bind generic <F11> :toggle commit-title-graph
+bind generic $ none
+bind generic <F12> :toggle commit-title-overflow
+
+# フロウ
+bind generic flow ?git flow "%(prompt git-flow Enter branch type [feature, release, hotfix]:)" "%(prompt git-flow Enter command name [start, finish, publish, track]:)" "%(prompt git-flow Enter branch name:)"
+
+# フェッチ
+bind generic fetch ?git fetch %(remote)
+
+# プッシュ
+bind generic push ?git push -u %(remote) %(repo:head)
+bind generic t-push ?git push %(remote) "%(prompt Enter tag name:)"
+
+# プル
+bind generic pull ?git pull %(remote) %(repo:head)
+
+# コミット
+bind generic commit ?git commit -m "%(prompt git commit Enter message:)"
+
+# チェックアウト
+bind generic =- ?git checkout -
+bind main == ?git checkout %(commit)
+bind diff == ?git checkout %(commit)
+bind log == ?git checkout %(commit)
+bind refs == ?git checkout %(branch)
+bind blame == ?git checkout %(commit)
+bind main checkout ?git checkout %(commit)
+bind diff checkout ?git checkout %(commit)
+bind log checkout ?git checkout %(commit)
+bind refs checkout ?git checkout %(branch)
+bind blame checkout ?git checkout %(commit)
+bind main =+ ?git checkout -b "%(prompt Enter branch name:)" %(commit)
+bind diff =+ ?git checkout -b "%(prompt Enter branch name:)" %(commit)
+bind log =+ ?git checkout -b "%(prompt Enter branch name:)" %(commit)
+bind refs =+ ?git checkout -b "%(prompt Enter branch name:)" %(branch)
+bind blame =+ ?git checkout -b "%(prompt Enter branch name:)" %(commit)
+bind main b-checkout ?git checkout -b "%(prompt Enter branch name:)" %(commit)
+bind diff b-checkout ?git checkout -b "%(prompt Enter branch name:)" %(commit)
+bind log b-checkout ?git checkout -b "%(prompt Enter branch name:)" %(commit)
+bind refs b-checkout ?git checkout -b "%(prompt Enter branch name:)" %(branch)
+bind blame b-checkout ?git checkout -b "%(prompt Enter branch name:)" %(commit)
+
+# タグ
+bind main tag ?git tag "%(prompt Enter tag name:)" %(commit)
+bind diff tag ?git tag "%(prompt Enter tag name:)" %(commit)
+bind log tag ?git tag "%(prompt Enter tag name:)" %(commit)
+bind refs tag ?git tag "%(prompt Enter tag name:)" %(branch)
+bind blame tag ?git tag "%(prompt Enter tag name:)" %(commit)
+
+# スタッシュ
+bind generic stash ?git stash save -k -u "%(prompt stash message:)"
+bind stash pop ?git stash pop %(stash)
+
+# リセット
+bind main reset ?git reset --"%(prompt git reset Enter option [mixed, soft, hard]:)" %(commit)
+bind log reset ?git reset --"%(prompt git reset Enter option [mixed, soft, hard]:)" %(commit)
+
+# マージ
+bind main merge ?git merge %(commit)
+bind diff merge ?git merge %(commit)
+bind refs merge ?git merge %(branch)
+bind log merge ?git merge %(commit)
+bind status merge status-merge
+
+# リベース
+bind main rebase ?git rebase %(commit)
+bind diff rebase ?git rebase %(commit)
+bind refs rebase ?git rebase %(branch)
+bind log rebase ?git rebase %(commit)
+bind main i-rebase ?git rebase -i %(commit)
+bind diff i-rebase ?git rebase -i %(commit)
+bind refs i-rebase ?git rebase -i %(branch)
+bind log i-rebase ?git rebase -i %(commit)
+
+# チェリーピック
+bind main pick ?git cherry-pick %(commit)
+bind diff pick ?git cherry-pick %(commit)
+bind log pick ?git cherry-pick %(commit)
+bind main n-pick ?git cherry-pick -n %(commit)
+bind diff n-pick ?git cherry-pick -n %(commit)
+bind log n-pick ?git cherry-pick -n %(commit)
+
+# リバート
+bind main revert ?git revert %(commit)
+bind diff revert ?git revert %(commit)
+bind log revert ?git revert %(commit)
+bind main m1-revert ?git revert -m 1 %(commit)
+bind diff m1-revert ?git revert -m 1 %(commit)
+bind log m1-revert ?git revert -m 1 %(commit)
+bind main m2-revert ?git revert -m 2 %(commit)
+bind diff m2-revert ?git revert -m 2 %(commit)
+bind log m2-revert ?git revert -m 2 %(commit)
+
+# 削除系
+bind refs drop ?git branch -d %(branch)
+bind refs clear ?sh -c "git branch --merged | grep -vE '^\\*|master$|develop$' | xargs -I % git branch -d %"
+bind status clean ?git clean -d -f -- %(file)
+bind status clear ?git clean -d -f
+bind stash ! none
+bind stash drop ?git stash drop %(stash)
+bind stash clear ?git stash clear
+bind tree remove ?git rm %(file)
