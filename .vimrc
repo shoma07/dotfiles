@@ -3,7 +3,7 @@
 " エンコード設定
 set encoding=utf-8
 scriptencoding utf-8
-""保存時の文字コード
+"" 保存時の文字コード
 set fileencoding=utf-8
 "" 読み込み時の文字コードの自動判別. 左側が優先される
 set fileencodings=ucs-boms,utf-8,euc-jp,cp932
@@ -29,6 +29,16 @@ set cursorline
 syntax enable
 "" カレントタブをハイライト
 hi TabLineSel ctermbg=1
+"" 対応括弧に<と>のペアを追加
+set matchpairs& matchpairs+=<:>
+"" 対応括弧をハイライト表示する
+set showmatch
+"" 対応括弧の表示秒数を3秒にする
+set matchtime=3
+"" 不可視文字を表示
+set listchars=tab:»-,trail:-,extends:»,precedes:«,nbsp:%,eol:↲
+"" 全角括弧関連
+set matchpairs+=「:」,『:』,（:）,【:】,《:》,〈:〉,［:］,‘:’,“:”
 
 " タブの設定
 "" タブ入力を複数の空白入力に置き換える
@@ -61,6 +71,39 @@ nnoremap <silent><Esc><Esc> :<C-u>set nohlsearch!<CR>
 set backspace=indent,eol,start
 
 " キーバインド設定
+nnoremap s <Nop>
+"" 画面分割
+nnoremap ss :<C-u>sp<CR>
+nnoremap sv :<C-u>vs<CR>
+"" 画面移動
+nnoremap sj <C-w>j
+nnoremap sk <C-w>k
+nnoremap sl <C-w>l
+nnoremap sh <C-w>h
+nnoremap sw <C-w>w
+"" 画面入れ替え
+nnoremap sJ <C-w>J
+nnoremap sK <C-w>K
+nnoremap sL <C-w>L
+nnoremap sH <C-w>H
+nnoremap sr <C-w>r
+"" 画面サイズ変更
+nnoremap so <C-w>_<C-w>|
+nnoremap s= <C-w>=
+nnoremap s. <C-w>>
+nnoremap s> <C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>>
+nnoremap s< <C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><
+nnoremap s+ <C-w>+
+nnoremap s- <C-w>-
+"" タブ操作
+nnoremap st :<C-u>tabnew<CR>
+nnoremap sn gt
+nnoremap sp gT
+"" 画面閉じる
+nnoremap sq :<C-u>q<CR>
+nnoremap sQ :<C-u>bd<CR>
+nnoremap sN :<C-u>bn<CR>
+nnoremap sP :<C-u>bp<CR>
 
 " プラグイン deni.vim
 "" Vim起動完了時にインストール
