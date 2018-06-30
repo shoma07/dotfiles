@@ -104,6 +104,16 @@ nnoremap sq :<C-u>q<CR>
 nnoremap sQ :<C-u>bd<CR>
 nnoremap sN :<C-u>bn<CR>
 nnoremap sP :<C-u>bp<CR>
+"" インサートモードの際の移動
+inoremap <C-k> <Up>
+inoremap <C-j> <Down>
+inoremap <C-h> <Left>
+inoremap <C-l> <Right>
+
+"" 辞書
+if isdirectory(expand('~/.vim/dict'))
+  set dictionary=~/.vim/dict/ruby.dict
+endif
 
 " プラグイン deni.vim
 "" Vim起動完了時にインストール
