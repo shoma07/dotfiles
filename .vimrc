@@ -20,29 +20,29 @@ if !isdirectory(s:dein_dir)
   silent execute printf('!git clone %s %s', 'https://github.com/Shougo/dein.vim', s:dein_dir)
 endif
 if dein#load_state(s:plugin_dir)
-    call dein#begin(s:plugin_dir)
-    call dein#add('Shougo/dein.vim')
-    "" ここにプラグインを追加
-    """ git
-    call dein#add('tpope/vim-fugitive')
-    call dein#add('airblade/vim-gitgutter')
-    """ ステータスライン
-    call dein#add('vim-airline/vim-airline')
-    call dein#add('vim-airline/vim-airline-themes')
-    """ NERDTree
-    call dein#add('scrooloose/nerdtree')
-    call dein#add('jistr/vim-nerdtree-tabs')
-    call dein#add('Xuyuanp/nerdtree-git-plugin')
-    """ Atom
-    call dein#add('joshdick/onedark.vim')
-    """ Yggdroot/indentLine インデントをわかりやすする
-    call dein#add('Yggdroot/indentLine')
-    """ bronson/vim-trailing-whitespace 末尾の全角と半角の空白文字を赤くハイライト
-    call dein#add('bronson/vim-trailing-whitespace')
-    call dein#add('vim-scripts/AutoComplPop')
-    "" !プラグイン追加
-    call dein#end()
-    call dein#save_state()
+  call dein#begin(s:plugin_dir)
+  call dein#add('Shougo/dein.vim')
+  "" ここにプラグインを追加
+  """ git
+  call dein#add('tpope/vim-fugitive')
+  call dein#add('airblade/vim-gitgutter')
+  """ ステータスライン
+  call dein#add('vim-airline/vim-airline')
+  call dein#add('vim-airline/vim-airline-themes')
+  """ NERDTree
+  call dein#add('scrooloose/nerdtree')
+  call dein#add('jistr/vim-nerdtree-tabs')
+  call dein#add('Xuyuanp/nerdtree-git-plugin')
+  """ Atom
+  call dein#add('joshdick/onedark.vim')
+  """ Yggdroot/indentLine インデントをわかりやすする
+  call dein#add('Yggdroot/indentLine')
+  """ bronson/vim-trailing-whitespace 末尾の全角と半角の空白文字を赤くハイライト
+  call dein#add('bronson/vim-trailing-whitespace')
+  call dein#add('vim-scripts/AutoComplPop')
+  "" !プラグイン追加
+  call dein#end()
+  call dein#save_state()
 endif
 
 filetype plugin indent on
