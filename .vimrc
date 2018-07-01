@@ -1,5 +1,48 @@
 " Shoma Ohara .vimrc
 
+if &compatible
+ set nocompatible
+endif
+
+" プラグイン deni.vim
+"" Vim起動完了時にインストール
+augroup PluginInstall
+  autocmd!
+  autocmd VimEnter * if dein#check_install() | call dein#install() | endif
+augroup END
+"" 各プラグインをインストールするディレクトリ
+let s:plugin_dir = expand('~/.vim/dein/')
+"" dein.vimをインストールするディレクトリをランタイムパスへ追加
+let s:dein_dir = s:plugin_dir . 'repos/github.com/Shougo/dein.vim'
+set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
+"" dein.vimがまだ入ってなければ 最初に`git clone`
+if !isdirectory(s:dein_dir)
+  silent execute printf('!git clone %s %s', 'https://github.com/Shougo/dein.vim', s:dein_dir)
+endif
+if dein#load_state(s:plugin_dir)
+    call dein#begin(s:plugin_dir)
+    call dein#add('Shougo/dein.vim')
+    "" ここにプラグインを追加
+    """ git
+    call dein#add('tpope/vim-fugitive')
+    call dein#add('airblade/vim-gitgutter')
+    """ ステータスライン
+    call dein#add('vim-airline/vim-airline')
+    call dein#add('vim-airline/vim-airline-themes')
+    """ Atom
+    call dein#add('joshdick/onedark.vim')
+    """ Yggdroot/indentLine インデントをわかりやすする
+    call dein#add('Yggdroot/indentLine')
+    """ bronson/vim-trailing-whitespace 末尾の全角と半角の空白文字を赤くハイライト
+    call dein#add('bronson/vim-trailing-whitespace')
+    call dein#add('vim-scripts/AutoComplPop')
+    "" !プラグイン追加
+    call dein#end()
+    call dein#save_state()
+endif
+
+filetype plugin indent on
+
 " エンコード設定
 set encoding=utf-8
 scriptencoding utf-8
@@ -13,20 +56,62 @@ set fileformats=unix,dos,mac
 set ambiwidth=double
 
 " netrw.vimの設定
+"" 上部に表示される情報を非表示
+let g:netrw_banner = 0
 "" netrwは常にtree view
 let g:netrw_liststyle = 3
 "" 'v'でファイルを開くときは右側に開く。(デフォルトが左側なので入れ替え)
 let g:netrw_altv = 1
 "" 'o'でファイルを開くときは下側に開く。(デフォルトが上側なので入れ替え)
 let g:netrw_alto = 1
+"" 分割で開いたときに85%のサイズで開く
+let g:netrw_winsize = 85
+
+" git
+autocmd QuickFixCmdPost *grep* cwindow
+nnoremap gh :GitGutterLineHighlightsToggle<CR>
+nnoremap gs :Gstatus<CR><C-w>J
+nnoremap gd :Gwrite
+nnoremap gl :!git<Space>log<Space>--graph<Space>--all<Space>--pretty=format:'\%Cred\%h\%Creset<Space>-\%C(yellow)\%d\%Creset<Space>\%s<Space>\%Cgreen(\%cr)<Space>\%C(bold<Space>blue)<\%an>\%Creset'<Space>--abbrev-commit<Space>--date=relative<CR>
+nnoremap gc :!git<Space>commit<CR>
+
+" カラースキーマ
+highlight clear
+"" シンタクッスクハイライトをオンにする
+syntax enable
+if exists("syntax_on")
+  syntax reset
+endif
+set t_Co=256
+let g:colors_name="onedark"
+let g:onedark_termcolors=256
+set background=dark
+"" スクロールが遅い時に,fでシンタックスを切り替えれるようにする
+noremap <silent> ,f :if exists("g:syntax_on")\|syntax off\|else\|syntax enable\|endif<CR>
+
+" vim-airline ステータスラインの設定
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#buffer_idx_format = {'0': '0 ', '1': '1 ', '2': '2 ', '3': '3 ', '4': '4 ', '5': '5 ', '6': '6 ', '7': '7 ', '8': '8 ', '9': '9 '}
+let g:airline_theme='onedark'
+"" ステータスラインを常に表示
+set laststatus=2
+"" 現在のモードを表示
+set showmode
+"" 打ったコマンドをステータスラインの下に表示
+set showcmd
+"" ステータスラインの右側にカーソルの現在位置を表示する
+set ruler
+
+" マウス操作を有効にする
+set mouse=a
 
 " 表示系の設定
 "" 行番号を表示する
 set number
 "" カーソルラインをハイライト
 set cursorline
-"" シンタクッスクハイライトをオンにする
-syntax enable
 "" カレントタブをハイライト
 hi TabLineSel ctermbg=1
 "" 対応括弧に<と>のペアを追加
@@ -66,27 +151,25 @@ set hlsearch
 "" ESCキー2度押しでハイライトの切り替え
 nnoremap <silent><Esc><Esc> :<C-u>set nohlsearch!<CR>
 
-" 入力設定
+" 編集の設定
 "" バックスペースを有効にする
 set backspace=indent,eol,start
+"" ファイルが外部で変更された際に自動で読み込む
+set autoread
+"" ファイル変更中に他のファイルを表示可能にする
+set hidden
 
-" キーバインド設定
+" 補完
+set completeopt=menuone
+
+" OSとクリップボードを共有する
+set clipboard=unnamed,autoselect
+
+" キーバインド・エイリアス設定
 nnoremap s <Nop>
 "" 画面分割
 nnoremap ss :<C-u>sp<CR>
 nnoremap sv :<C-u>vs<CR>
-"" 画面移動
-nnoremap sj <C-w>j
-nnoremap sk <C-w>k
-nnoremap sl <C-w>l
-nnoremap sh <C-w>h
-nnoremap sw <C-w>w
-"" 画面入れ替え
-nnoremap sJ <C-w>J
-nnoremap sK <C-w>K
-nnoremap sL <C-w>L
-nnoremap sH <C-w>H
-nnoremap sr <C-w>r
 "" 画面サイズ変更
 nnoremap so <C-w>_<C-w>|
 nnoremap s= <C-w>=
@@ -95,59 +178,16 @@ nnoremap s> <C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>>
 nnoremap s< <C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><
 nnoremap s+ <C-w>+
 nnoremap s- <C-w>-
-"" タブ操作
-nnoremap st :<C-u>tabnew<CR>
-nnoremap sn gt
-nnoremap sp gT
-"" 画面閉じる
-nnoremap sq :<C-u>q<CR>
-nnoremap sQ :<C-u>bd<CR>
-nnoremap sN :<C-u>bn<CR>
-nnoremap sP :<C-u>bp<CR>
 "" インサートモードの際の移動
 inoremap <C-k> <Up>
 inoremap <C-j> <Down>
 inoremap <C-h> <Left>
 inoremap <C-l> <Right>
+"" バッファ
+nnoremap sb :ls<CR>:buf
 
 "" 辞書
 if isdirectory(expand('~/.vim/dict'))
-  set dictionary=~/.vim/dict/ruby.dict
+  autocmd FileType rb   :set dictionary=~/.vim/dict/ruby.dict
+  autocmd FileType rake :set dictionary=~/.vim/dict/ruby.dict
 endif
-
-" プラグイン deni.vim
-"" Vim起動完了時にインストール
-augroup PluginInstall
-  autocmd!
-  autocmd VimEnter * if dein#check_install() | call dein#install() | endif
-augroup END
-"" 各プラグインをインストールするディレクトリ
-let s:plugin_dir = expand('~/.vim/dein/')
-"" dein.vimをインストールするディレクトリをランタイムパスへ追加
-let s:dein_dir = s:plugin_dir . 'repos/github.com/Shougo/dein.vim'
-set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
-"" dein.vimがまだ入ってなければ 最初に`git clone`
-if !isdirectory(expand('~/.vim/dein/repos/github.com/Shougo/dein.vim'))
-  call mkdir(expand('~/.vim/dein/repos/github.com/Shougo/dein.vim'), 'p')
-  silent execute printf('!git clone %s %s', 'https://github.com/Shougo/dein.vim', expand('~/.vim/dein/repos/github.com/Shougo/dein.vim'))
-endif
-if dein#load_state(expand('~/.vim/dein/'))
-    call dein#begin(expand('~/.vim/dein/'))
-    call dein#add('Shougo/dein.vim')
-    "" ここにプラグインを追加
-    """ Yggdroot/indentLine インデントをわかりやすする
-    call dein#add('Yggdroot/indentLine')
-    """ itchyny/lightline.vim ステータスラインをいい感じにする
-    call dein#add('itchyny/lightline.vim')
-    set laststatus=2 " ステータスラインを常に表示
-    set showmode " 現在のモードを表示
-    set showcmd " 打ったコマンドをステータスラインの下に表示
-    set ruler " ステータスラインの右側にカーソルの現在位置を表示する
-    """ bronson/vim-trailing-whitespace 末尾の全角と半角の空白文字を赤くハイライト
-    call dein#add('bronson/vim-trailing-whitespace')
-    "" !プラグイン追加
-    call dein#end()
-    call dein#save_state()
-endif
-
-filetype plugin indent on
