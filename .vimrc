@@ -29,6 +29,10 @@ if dein#load_state(s:plugin_dir)
     """ ステータスライン
     call dein#add('vim-airline/vim-airline')
     call dein#add('vim-airline/vim-airline-themes')
+    """ NERDTree
+    call dein#add('scrooloose/nerdtree')
+    call dein#add('jistr/vim-nerdtree-tabs')
+    call dein#add('Xuyuanp/nerdtree-git-plugin')
     """ Atom
     call dein#add('joshdick/onedark.vim')
     """ Yggdroot/indentLine インデントをわかりやすする
@@ -66,6 +70,29 @@ let g:netrw_altv = 1
 let g:netrw_alto = 1
 "" 分割で開いたときに85%のサイズで開く
 let g:netrw_winsize = 85
+
+" NERDTree
+let NERDTreeShowHidden = 1
+let NERDTreeMinimalUI=1
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+command NT NERDTreeToggle
+let g:NERDTreeIndicatorMapCustom = {
+  \ "Modified"  : "✹",
+  \ "Staged"    : "✚",
+  \ "Untracked" : "✭",
+  \ "Renamed"   : "➜",
+  \ "Unmerged"  : "═",
+  \ "Deleted"   : "✖",
+  \ "Dirty"     : "✗",
+  \ "Clean"     : "✔︎",
+  \ 'Ignored'   : '☒',
+  \ "Unknown"   : "?"
+\ }
+
+
+set splitright
+set splitbelow
 
 " git
 autocmd QuickFixCmdPost *grep* cwindow
@@ -110,8 +137,10 @@ set mouse=a
 " 表示系の設定
 "" 行番号を表示する
 set number
+hi LineNr cterm=NONE ctermfg=grey ctermbg=darkgray
 "" カーソルラインをハイライト
 set cursorline
+hi clear CursorLine
 "" カレントタブをハイライト
 hi TabLineSel ctermbg=1
 "" 対応括弧に<と>のペアを追加
@@ -166,25 +195,16 @@ set completeopt=menuone
 set clipboard=unnamed,autoselect
 
 " キーバインド・エイリアス設定
-nnoremap s <Nop>
-"" 画面分割
-nnoremap ss :<C-u>sp<CR>
-nnoremap sv :<C-u>vs<CR>
 "" 画面サイズ変更
-nnoremap so <C-w>_<C-w>|
-nnoremap s= <C-w>=
-nnoremap s. <C-w>>
-nnoremap s> <C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>>
-nnoremap s< <C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><
-nnoremap s+ <C-w>+
-nnoremap s- <C-w>-
+nnoremap <C-w>, <C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>>
+nnoremap <C-w>. <C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><
+"" バッファ
+nnoremap <C-s>b :ls<CR>:buf
 "" インサートモードの際の移動
 inoremap <C-k> <Up>
 inoremap <C-j> <Down>
 inoremap <C-h> <Left>
 inoremap <C-l> <Right>
-"" バッファ
-nnoremap sb :ls<CR>:buf
 
 "" 辞書
 if isdirectory(expand('~/.vim/dict'))
