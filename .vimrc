@@ -42,8 +42,12 @@ if dein#load_state(s:plugin_dir)
   call dein#add('scrooloose/nerdtree')
   call dein#add('jistr/vim-nerdtree-tabs')
   call dein#add('Xuyuanp/nerdtree-git-plugin')
-  "" Atom風のテーマ
+  "" テーマ
+  "" @see http://colorswat.ch/vim/list?cat=all&o=star
+  """ Atom風
   call dein#add('joshdick/onedark.vim')
+  """ SublimeText風
+  call dein#add('tomasr/molokai')
   "" @see https://github.com/Yggdroot/indentLine
   call dein#add('Yggdroot/indentLine')
   "" 不要な全角と半角の空白文字を赤くハイライト
@@ -80,6 +84,64 @@ set splitright
 " 新しいウィンドウを下に開く
 set splitbelow
 
+" スワップファイルを作らない
+set noswapfile
+
+" マウスの有効無効
+command M call ToggleMouse()
+function! ToggleMouse()
+  if &mouse == ''
+    set mouse=a
+  elseif &mouse == 'a'
+    set mouse=
+  endif
+endfunction
+
+" カラースキーマ
+"" シンタクッスクをリセットにする
+if exists("syntax_on")
+  syntax reset
+endif
+set t_Co=256
+"colorscheme onedark
+colorscheme molokai
+let g:molokai_original=1
+let g:rehash256=1
+"" スクロールが遅い時に,fでシンタックスを切り替えれるようにする
+noremap <silent>,f :call ToggleSyntax()<CR>
+function! ToggleSyntax()
+  if exists("g:syntax_on")
+    syntax off
+    hi clear
+  else
+    syntax enable
+    "" vim-gitgutterのハイライト
+    hi GitGutterAdd term=bold ctermfg=114 ctermbg=235
+    hi GitGutterChange term=bold ctermfg=180 ctermbg=235
+    hi GitGutterDelete term=bold ctermfg=204 ctermbg=235
+    hi GitGutterChangeDelete term=bold ctermfg=3 ctermbg=darkgray
+    hi GitGutterAddLine term=bold ctermfg=235 ctermbg=114
+    hi GitGutterChangeLine term=bold ctermfg=235 ctermbg=180
+    hi GitGutterDeleteLine term=bold ctermfg=235 ctermbg=204
+    hi GitGutterChangeDeleteLine term=bold ctermfg=235 ctermbg=180
+  endif
+endfunction
+
+" vim-airline ステータスラインの設定
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#buffer_idx_format = {'0': '0 ', '1': '1 ', '2': '2 ', '3': '3 ', '4': '4 ', '5': '5 ', '6': '6 ', '7': '7 ', '8': '8 ', '9': '9 '}
+let g:airline_theme='onedark'
+"" ステータスラインを常に表示
+set laststatus=2
+"" 現在のモードを表示
+set showmode
+"" 打ったコマンドをステータスラインの下に表示
+set showcmd
+"" ステータスラインの右側にカーソルの現在位置を表示する
+set ruler
+
 " NERDTreeの設定
 let NERDTreeShowHidden = 1
 let NERDTreeMinimalUI=1
@@ -107,11 +169,15 @@ augroup grep
 augroup END
 
 " airblade/vim-gitgutterのコマンドにショートカットを設定
+"" 更新時間 ミリ秒
+set updatetime=100
+"" 常時vim-gitgutterの列を表示する
+set signcolumn=yes
 "" 差分を更新した上で行のハイライトを切り替え
-nnoremap <silent>gh :GitGutter<CR>:GitGutterLineHighlightsToggle<CR>
+nnoremap <silent>gh :GitGutterLineHighlightsToggle<CR>
 augroup vim_gitgutter
   autocmd!
-  autocmd FileChangedShell * GitGutter
+  autocmd BufWritePost * GitGutter
 augroup END
 " tpope/vim-fugitive
 nnoremap gs :Gstatus<CR><C-w>J
@@ -119,57 +185,6 @@ nnoremap gs :Gstatus<CR><C-w>J
 nnoremap gl :!git<Space>log<Space>--graph<Space>--all<Space>--pretty=format:'\%Cred\%h\%Creset<Space>-\%C(yellow)\%d\%Creset<Space>\%s<Space>\%Cgreen(\%cr)<Space>\%C(bold<Space>blue)<\%an>\%Creset'<Space>--abbrev-commit<Space>--date=relative<CR>
 " git commitのショートカット(Gcommitではない)
 nnoremap gc :!git<Space>commit<CR>
-
-" カラースキーマ
-highlight clear
-"" シンタクッスクハイライトをオンにする
-if exists("syntax_on")
-  syntax reset
-endif
-syntax enable
-set t_Co=256
-let g:colors_name="onedark"
-let g:onedark_termcolors=256
-set background=dark
-"" スクロールが遅い時に,fでシンタックスを切り替えれるようにする
-noremap <silent>,f :call ToggleSyntax()<CR>
-function! ToggleSyntax()
-  if exists("g:syntax_on")
-    syntax off
-    hi LineNr cterm=NONE ctermfg=NONE ctermbg=NONE
-  else
-    syntax enable
-    hi LineNr cterm=NONE ctermfg=grey ctermbg=darkgray
-  endif
-endfunction
-
-" vim-airline ステータスラインの設定
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_idx_mode = 1
-let g:airline#extensions#tabline#buffer_idx_format = {'0': '0 ', '1': '1 ', '2': '2 ', '3': '3 ', '4': '4 ', '5': '5 ', '6': '6 ', '7': '7 ', '8': '8 ', '9': '9 '}
-let g:airline_theme='onedark'
-"" ステータスラインを常に表示
-set laststatus=2
-"" 現在のモードを表示
-set showmode
-"" 打ったコマンドをステータスラインの下に表示
-set showcmd
-"" ステータスラインの右側にカーソルの現在位置を表示する
-set ruler
-
-" スワップファイルを作らない
-set noswapfile
-
-" マウスの有効無効
-nnoremap <silent>m :<C-u>call ToggleMouse()<CR>
-function! ToggleMouse()
-  if &mouse == ''
-    set mouse=a
-  elseif &mouse == 'a'
-    set mouse=
-  endif
-endfunction
 
 " ペースト設定 クリップボードからペーストする時だけインデントしないようにする
 if &term =~ "xterm"
@@ -202,10 +217,8 @@ set shiftwidth=2
 " 表示系の設定
 "" 行番号を表示する
 set number
-hi LineNr cterm=NONE ctermfg=grey ctermbg=darkgray
 "" カーソルラインをハイライト
 set cursorline
-hi clear CursorLine
 "" カレントタブをハイライト
 hi TabLineSel ctermbg=1
 "" 対応括弧に<と>のペアを追加
@@ -258,8 +271,12 @@ set pumheight=10
 set clipboard=unnamed,autoselect
 
 " 画面サイズ変更
-nnoremap <silent>+ <C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>>
+"" 垂直方向
+nnoremap <silent>_ <C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>>
 nnoremap <silent>- <C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><
+"" 水平方向
+nnoremap <silent>+ <C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+
+nnoremap <silent>= <C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-
 
 " インサートモードの際の移動
 inoremap <C-k> <Up>
@@ -278,3 +295,6 @@ nnoremap う u
 nnoremap お o
 nnoremap っd dd
 nnoremap っy yy
+
+" シンタックス有効化
+call ToggleSyntax()
