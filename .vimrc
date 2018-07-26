@@ -42,6 +42,12 @@ if dein#load_state(s:plugin_dir)
   call dein#add('scrooloose/nerdtree')
   call dein#add('jistr/vim-nerdtree-tabs')
   call dein#add('Xuyuanp/nerdtree-git-plugin')
+  "" テキスト整形
+  "" @see https://github.com/junegunn/vim-easy-align
+  call dein#add('junegunn/vim-easy-align')
+  "" 関数やクラスを一覧させる Ctagsが必要
+  "" @see https://github.com/majutsushi/tagbar
+  call dein#add('majutsushi/tagbar')
   "" テーマ
   "" @see http://colorswat.ch/vim/list?cat=all&o=star
   """ Atom風
@@ -96,6 +102,13 @@ function! ToggleMouse()
     set mouse=
   endif
 endfunction
+
+" vim-easy-align
+nmap <silent>ga :LiveEasyAlign<space>*
+xmap <silent>ga :LiveEasyAlign<space>*
+
+" majutsushi/tagbar
+nmap <silent>tb :TagbarToggle<CR>
 
 " カラースキーマ
 "" シンタクッスクをリセットにする
@@ -174,17 +187,17 @@ set updatetime=100
 "" 常時vim-gitgutterの列を表示する
 set signcolumn=yes
 "" 差分を更新した上で行のハイライトを切り替え
-nnoremap <silent>gh :GitGutterLineHighlightsToggle<CR>
+nmap <silent>gh :GitGutterLineHighlightsToggle<CR>
 augroup vim_gitgutter
   autocmd!
   autocmd BufWritePost * GitGutter
 augroup END
 " tpope/vim-fugitive
-nnoremap gs :Gstatus<CR><C-w>J
+nmap gs :Gstatus<CR><C-w>J
 " git logをグラフで出力する
-nnoremap gl :!git<Space>log<Space>--graph<Space>--all<Space>--pretty=format:'\%Cred\%h\%Creset<Space>-\%C(yellow)\%d\%Creset<Space>\%s<Space>\%Cgreen(\%cr)<Space>\%C(bold<Space>blue)<\%an>\%Creset'<Space>--abbrev-commit<Space>--date=relative<CR>
+nmap gl :!git<Space>log<Space>--graph<Space>--all<Space>--pretty=format:'\%Cred\%h\%Creset<Space>-\%C(yellow)\%d\%Creset<Space>\%s<Space>\%Cgreen(\%cr)<Space>\%C(bold<Space>blue)<\%an>\%Creset'<Space>--abbrev-commit<Space>--date=relative<CR>
 " git commitのショートカット(Gcommitではない)
-nnoremap gc :!git<Space>commit<CR>
+nmap gc :!git<Space>commit<CR>
 
 " ペースト設定 クリップボードからペーストする時だけインデントしないようにする
 if &term =~ "xterm"
@@ -245,7 +258,7 @@ set smartcase
 "" 検索結果をハイライト
 set hlsearch
 "" ESCキー2度押しでハイライトの切り替え
-nnoremap <silent><Esc><Esc> :<C-u>set nohlsearch!<CR>
+nmap <silent><Esc><Esc> :<C-u>set nohlsearch!<CR>
 
 " 編集の設定
 "" 編集中のファイルが変更されたら自動で読み直す
@@ -272,11 +285,11 @@ set clipboard=unnamed,autoselect
 
 " 画面サイズ変更
 "" 垂直方向
-nnoremap <silent>_ <C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>>
-nnoremap <silent>- <C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><
+nmap <silent>_ <C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>>
+nmap <silent>- <C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><
 "" 水平方向
-nnoremap <silent>+ <C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+
-nnoremap <silent>= <C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-
+nmap <silent>+ <C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+
+nmap <silent>= <C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-
 
 " インサートモードの際の移動
 inoremap <C-k> <Up>
@@ -285,16 +298,16 @@ inoremap <C-h> <Left>
 inoremap <C-l> <Right>
 
 " 日本語入力モードのままでも一定の操作ができるようにする
-nnoremap ：w :w<CR>
-nnoremap ：q :q<CR>
-nnoremap ：wq :wq<CR>
-nnoremap ：bd :bd<CR>
-nnoremap あ a
-nnoremap い i
-nnoremap う u
-nnoremap お o
-nnoremap っd dd
-nnoremap っy yy
+nmap ：w :w<CR>
+nmap ：q :q<CR>
+nmap ：wq :wq<CR>
+nmap ：bd :bd<CR>
+nmap あ a
+nmap い i
+nmap う u
+nmap お o
+nmap っd dd
+nmap っy yy
 
 " シンタックス有効化
 call ToggleSyntax()
