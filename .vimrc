@@ -65,6 +65,10 @@ if dein#load_state(s:plugin_dir)
   "" 括弧補完
   "" @see https://github.com/cohama/lexima.vim
   call dein#add('cohama/lexima.vim')
+  "" @see
+  call dein#add('fatih/vim-go')
+  call dein#add('posva/vim-vue')
+  call dein#add('rust-lang/rust.vim')
   "" !プラグイン追加
   call dein#end()
   call dein#save_state()
@@ -72,6 +76,8 @@ endif
 
 " ファイルタイプの自動検出
 filetype plugin indent on
+
+autocmd FileType vue syntax sync fromstart
 
 " エンコード設定
 set encoding=utf-8
@@ -234,6 +240,8 @@ set number
 set cursorline
 "" カレントタブをハイライト
 hi TabLineSel ctermbg=1
+"" 80文字目にラインを表示
+set colorcolumn=80
 "" 対応括弧に<と>のペアを追加
 set matchpairs& matchpairs+=<:>
 "" 対応括弧をハイライト表示する
