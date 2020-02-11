@@ -71,6 +71,7 @@ if dein#load_state(s:plugin_dir)
   call dein#add('fatih/vim-go')
   call dein#add('posva/vim-vue')
   call dein#add('rust-lang/rust.vim')
+  call dein#add('pangloss/vim-javascript')
   call dein#add('leafgarland/typescript-vim')
   "" !プラグイン追加
   call dein#end()
