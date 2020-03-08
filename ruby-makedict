@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+require 'cgi'
+
+methods = []
+Dir.glob("#{ENV['RBENV_ROOT']}/versions/#{RUBY_VERSION}/**/*.ri").each do |file|
+  method = CGI.unescape(File.basename(file))
+  if /\A(.*)-\w*\.ri\Z/ =~ method
+    methods << $1
+  end
+end
+
+methods.uniq.sort.each do |method|
+  puts method unless method.size == 1
+end
