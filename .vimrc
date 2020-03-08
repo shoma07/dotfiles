@@ -47,6 +47,9 @@ if dein#load_state(s:plugin_dir)
   "" テキスト整形
   "" @see https://github.com/junegunn/vim-easy-align
   call dein#add('junegunn/vim-easy-align')
+  "" タグジャンプ
+  "" @see https://github.com/szw/vim-tags
+  call dein#add('shoma07/vim-tags')
   "" 関数やクラスを一覧させる Ctagsが必要
   "" @see https://github.com/majutsushi/tagbar
   call dein#add('majutsushi/tagbar')
@@ -67,7 +70,7 @@ if dein#load_state(s:plugin_dir)
   "" 括弧補完
   "" @see https://github.com/cohama/lexima.vim
   call dein#add('cohama/lexima.vim')
-  "" @see
+  "" 言語ごとのプラグイン
   call dein#add('fatih/vim-go')
   call dein#add('posva/vim-vue')
   call dein#add('rust-lang/rust.vim')
