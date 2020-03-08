@@ -70,6 +70,8 @@ if dein#load_state(s:plugin_dir)
   "" 括弧補完
   "" @see https://github.com/cohama/lexima.vim
   call dein#add('cohama/lexima.vim')
+  "" @see https://github.com/editorconfig/editorconfig-vim
+  call dein#add('editorconfig/editorconfig-vim')
   "" 言語ごとのプラグイン
   call dein#add('fatih/vim-go')
   call dein#add('posva/vim-vue')
@@ -211,6 +213,8 @@ nmap gs :Gstatus<CR><C-w>J
 nmap gl :!git<Space>log<Space>--graph<Space>--all<Space>--pretty=format:'\%Cred\%h\%Creset<Space>-\%C(yellow)\%d\%Creset<Space>\%s<Space>\%Cgreen(\%cr)<Space>\%C(bold<Space>blue)<\%an>\%Creset'<Space>--abbrev-commit<Space>--date=relative<CR>
 " git commitのショートカット(Gcommitではない)
 nmap gc :!git<Space>commit<CR>
+"" editor configの設定
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
 " ペースト設定 クリップボードからペーストする時だけインデントしないようにする
 if &term =~ "xterm"
