@@ -72,12 +72,15 @@ if dein#load_state(s:plugin_dir)
   call dein#add('cohama/lexima.vim')
   "" @see https://github.com/editorconfig/editorconfig-vim
   call dein#add('editorconfig/editorconfig-vim')
+  "" @see https://github.com/dense-analysis/ale
+  call dein#add('dense-analysis/ale')
   "" 言語ごとのプラグイン
   call dein#add('fatih/vim-go')
   call dein#add('posva/vim-vue')
   call dein#add('rust-lang/rust.vim')
   call dein#add('pangloss/vim-javascript')
   call dein#add('leafgarland/typescript-vim')
+  call dein#add('dart-lang/dart-vim-plugin')
   "" !プラグイン追加
   call dein#end()
   call dein#save_state()
@@ -252,7 +255,7 @@ set cursorline
 "" カレントタブをハイライト
 hi TabLineSel ctermbg=1
 "" 80文字目にラインを表示
-set colorcolumn=80
+set colorcolumn=100
 "" 対応括弧に<と>のペアを追加
 set matchpairs& matchpairs+=<:>
 "" 対応括弧をハイライト表示する
