@@ -74,7 +74,7 @@ if dein#load_state(s:plugin_dir)
   "" @see https://github.com/dense-analysis/ale
   "" call dein#add('dense-analysis/ale')
   "" 言語ごとのプラグイン
-  call dein#add('fatih/vim-go')
+  call dein#add('fatih/vim-go', { 'do': ':GoInstallBinaries' })
   call dein#add('posva/vim-vue')
   call dein#add('rust-lang/rust.vim')
   call dein#add('pangloss/vim-javascript')
