@@ -1,4 +1,4 @@
-" Shoma Ohara .vimrc
+" shoma07 .vimrc
 
 " vi互換モードをオフにする
 "" .vimrcがある時点でオフになるが一応設定しておく
@@ -462,11 +462,11 @@ set clipboard=unnamed,autoselect
 
 " 画面サイズ変更
 "" 垂直方向
-nmap <silent>_ <C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>>
-nmap <silent>- <C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><
+nmap <silent>> <C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>><C-w>>
+nmap <silent>< <C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><<C-w><
 "" 水平方向
 nmap <silent>+ <C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+<C-w>+
-nmap <silent>= <C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-
+nmap <silent>_ <C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-<C-w>-
 
 " インサートモードの際の移動
 inoremap <C-k> <Up>
