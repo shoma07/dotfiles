@@ -55,12 +55,6 @@ if dein#load_state(s:plugin_dir)
   "" Fuzzy Finder
   call dein#add('junegunn/fzf', { 'build': './install --all', 'merged': 0 })
   call dein#add('junegunn/fzf.vim', { 'depends': 'fzf' })
-  "" タグジャンプ
-  "" @see https://github.com/szw/vim-tags
-  call dein#add('shoma07/vim-tags')
-  "" 関数やクラスを一覧させる Ctagsが必要
-  "" @see https://github.com/majutsushi/tagbar
-  call dein#add('majutsushi/tagbar')
   "" テーマ
   "" @see http://colorswat.ch/vim/list?cat=all&o=star
   """ SublimeText風
@@ -184,6 +178,8 @@ endif
 let g:fzf_vim = {}
 let g:fzf_command_prefix = 'Fzf'
 let $FZF_DEFAULT_OPTS="--layout=reverse"
+"" brew install ripgrep
+let $FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 let g:fzf_layout = { 'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'border': 'sharp'  } }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -381,6 +377,8 @@ nmap <silent><Esc><Esc> :<C-u>set nohlsearch!<CR>
 "" airblade/vim-gitgutterのコマンドにショートカットを設定
 nmap gG :Ggrep<Space>
 nmap gs :G<CR><C-w>J
+"" git blame
+nmap gb :Git blame<CR>
 "" git logをグラフで出力する
 nmap gl :!git<Space>log<Space>--graph<Space>--all<Space>--pretty=format:'\%Cred\%h\%Creset<Space>-\%C(yellow)\%d\%Creset<Space>\%s<Space>\%Cgreen(\%cr)<Space>\%C(bold<Space>blue)<\%an>\%Creset'<Space>--abbrev-commit<Space>--date=relative<CR>
 "" git commitのショートカット(Gcommitではない)
@@ -389,9 +387,6 @@ nmap gc :!git<Space>commit<CR>
 nmap <silent>gh :GitGutterLineHighlightsToggle<CR>
 "" vim-easy-align
 map <silent>ga :LiveEasyAlign<space>*
-map <silent>ga :LiveEasyAlign<space>*
-"" majutsushi/tagbar
-nmap <silent>tb :TagbarToggle<CR>
 "" スクロールが遅い時に,fでシンタックスを切り替えれるようにする
 noremap <silent>,f :call ToggleSyntax()<CR>
 "" fzf ファジーファインダー
@@ -406,3 +401,7 @@ inoremap <C-k> <Up>
 inoremap <C-j> <Down>
 inoremap <C-h> <Left>
 inoremap <C-l> <Right>
+"" Quit, Write
+nnoremap <silent> ;w :w<CR>
+nnoremap <silent> ;q :q<CR>
+nnoremap <silent> ;wq :wq<CR>
