@@ -87,10 +87,10 @@ if dein#load_state(s:plugin_dir)
   "" @see https://github.com/neoclide/coc-rls
   "" call dein#add('neoclide/coc.nvim', { 'merged': 0, 'rev': 'release' })
   "" LSP
-  "" call dein#add('prabirshrestha/asyncomplete.vim')
-  "" call dein#add('prabirshrestha/asyncomplete-lsp.vim')
-  "" call dein#add('prabirshrestha/vim-lsp')
-  "" call dein#add('mattn/vim-lsp-settings')
+  call dein#add('prabirshrestha/vim-lsp')
+  call dein#add('prabirshrestha/asyncomplete.vim')
+  call dein#add('prabirshrestha/asyncomplete-lsp.vim')
+  call dein#add('mattn/vim-lsp-settings')
   "" call dein#add('mattn/vim-lsp-icons')
   "" !プラグイン追加
   call dein#end()
@@ -211,6 +211,34 @@ let g:rustfmt_autosave = 1
 "" let g:lsp_settings_filetype_ruby = ['ruby-lsp', 'steep']
 "" let g:lsp_log_verbose = 1  " デバッグ用ログを出力
 "" let g:lsp_log_file = expand('~/.cache/tmp/vim-lsp.log')  " ログ出力のPATHを設定
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    " nmap <buffer> <C-l>d <plug>(lsp-definition)
+    " nmap <buffer> <C-l>s <plug>(lsp-document-symbol-search)
+    " nmap <buffer> <C-l>S <plug>(lsp-workspace-symbol-search)
+    " nmap <buffer> <C-l>r <plug>(lsp-references)
+    " nmap <buffer> <C-l>i <plug>(lsp-implementation)
+    " nmap <buffer> <C-l>t <plug>(lsp-type-definition)
+    " nmap <buffer> <leader>rn <plug>(lsp-rename)
+    " nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    " nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+    " nmap <buffer> K <plug>(lsp-hover)
+    " nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
+    " nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
+
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+
+    " refer to doc to add more commands
+endfunction
+
+augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " grep
@@ -331,6 +359,8 @@ set ruler
 filetype plugin indent on
 
 autocmd FileType vue syntax sync fromstart
+" jbuilderをRubyのシンタックスで表示
+au BufNewFile,BufRead *.json.jbuilder set ft=ruby
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Color Syntax
